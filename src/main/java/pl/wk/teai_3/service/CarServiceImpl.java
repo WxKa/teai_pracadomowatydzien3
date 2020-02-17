@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class CarServiceImpl implements ICarService {
@@ -23,6 +24,15 @@ public class CarServiceImpl implements ICarService {
     @Override
     public List<Car> getCars() {
         return carList;
+    }
+
+    @Override
+    public int getCarIndex( long id  ) {
+        List<Car> entries = getCars();
+        int index = IntStream.range(0, entries.size())
+            .filter(i -> id == entries.get(i).getId())
+            .findFirst().orElse(-1);
+        return index;
     }
 
     @Override
@@ -70,7 +80,22 @@ public class CarServiceImpl implements ICarService {
     }
 
     @Override
-    public boolean removeCar(Car car) {
-        return getCars().remove(car);
+    public boolean setCar( int index, Car car ) {
+        Car oldCar = getCars().get(index);
+        if( oldCar.getId() != car.getId() ) {
+            return false;
+        }
+        getCars().set(index, car);
+        return true;
+    }
+
+    @Override
+    public boolean removeCar( int index, long id ) {
+        Car oldCar = getCars().get(index);
+        if( oldCar.getId() != id ) {
+            return false;
+        }
+        getCars().remove(index);
+        return true;
     }
 }

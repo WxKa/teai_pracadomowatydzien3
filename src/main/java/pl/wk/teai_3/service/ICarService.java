@@ -9,9 +9,11 @@ import java.util.Optional;
 public interface ICarService {
 
     List<Car> getCars();
-    Car getCarById(long id);
+    int getCarIndex( long id );
+    Car getCarById( long id );
     List<Car> getCarsByColor(String color);
     boolean addCar(Car car);
     boolean modifyCar( Car car, Map<String, String> requestParams );
-    boolean removeCar(Car car);
+    boolean setCar( int index, Car car );
+    boolean removeCar( int index, long id );
 }
